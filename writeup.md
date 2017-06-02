@@ -16,16 +16,16 @@ The goals / steps of this project are the following:
 ### 1. Describe your pipeline. 
 
 My pipeline consisted of 5 primary steps:
-1. First, I converted the images to grayscale. I noticed through my trial tests that I was able to best detect white and yellow lanes by splitting the frame RGB channels and apply grayscale using only the R&G values. 
-2. Second I blacked out the regions outside of the rough quadrilateral shape of a straight lane line-- this removes other edges which might distract my pipeline from identifying a lane line. 
+1. I converted the images to grayscale. I noticed through my trial tests that I was able to best detect white and yellow lanes by splitting up each video frame to separate RGB channels and then applying grayscale on only the R&G channel values. 
+2. I then blacked out the regions outside of the quadrilateral shape of a straight lane line-- this removes other edges which might distract my pipeline from identifying a lane line. 
 3. Next I applied a Gaussian filter to smooth out the image so that the edge detector can focus on the main edges.
-4. Fourth, I apply the Canny Edge detector function so I can retrieve a list of pixels who are likely candidates to be lane lines.
-5. Fifth, I run the pixels detected in the previous step through a hough transformation so that I can find common slopes-- this helps me identify what the lane line equations are. 
+4. Since the image is smoother, now I can apply the Canny Edge detector function to retrieve a list of pixels which are likely candidates to be lane lines.
+5. Last I run the pixels detected in the previous step through the opencv houghLinesP function to find find common slopes.
  
 
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function to:
 1. Given the (x1,y1) & (x2,y2) coordinates for each line, find the corresponding slope and y-intercepts. 
-2. Identify parallel  lines for each side. If these parallel  lines are close to each other, then we keep them all and average the intercepts and slopes. If the lines are far apart, (in this pipeline, we define far as more than +/- 20 px from the median of the slope values), then only certain slope/intercept pairs are evaluated. In this situation, for left lanes, we only consider slope/intercept pairs which have a larger intercept. These pairs would most likely be the line closest to the center of the image and most likely a lane line, as opposed to a parallel highway barrier shadow. For right lanes, we conly consider slope/intercept pairs which ahve a smaller intercept. Consider the image below: 
+2. Identify parallel  lines for each side. If these parallel  lines are close to each other, then we keep them all and average the intercepts and slopes. If the lines are far apart, (in this pipeline, we define far as intercepts which are more than +/- 100 px from each other), then only certain slope/intercept pairs are evaluated. For left lanes, we only consider slope/intercept pairs which have a larger intercepts. These pairs would most likely be the line closest to the center of the image and most likely a lane line, as opposed to a parallel highway barrier shadow. For right lanes, we conly consider slope/intercept pairs which have a smaller intercept. Consider the image below: 
  ![](./examples/lane_line_or_barrier_shadow.png)
 3. Once we have a set of slope/intercept pairs singled out from the previous step, we attempt to screen out any outliers to prevent them from skewing our final slope/intercept value for the left and right lane. 
      We accomplish this by: 
@@ -56,5 +56,5 @@ There are numerous improvements we could make to this pipeline:
  ![](./examples/change_in_asphalt_color.png?raw=true)
  2. We could further improve the pipeline such that it could detect curved edges. At the moment, it only detects straight lines. Curved lanes could provide more accurate environmental information to the vehicle. 
  
- 3. Many of the parameters (such as the canny threshold or the houghline parameters) input in the pipeline were informally selected after a series of sample trials. These parameters could be better identified if they were systematically identified after training them through a larger dataset. 
+ 3. Many of the parameters (such as the canny threshold or the houghline parameters) input in the pipeline were tuned after a series of sample trials. These parameters could be further trained with additional training videos.
 
