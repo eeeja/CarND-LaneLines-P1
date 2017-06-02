@@ -11726,9 +11726,7 @@ body {
 div#notebook {
   overflow: visible;
   border-top: none;
-}
-
-@media print {
+}@media print {
   div.cell {
     display: block;
     page-break-inside: avoid;
@@ -11749,7 +11747,7 @@ div#notebook {
 
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -11773,14 +11771,13 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Self-Driving-Car-Engineer-Nanodegree">Self-Driving Car Engineer Nanodegree<a class="anchor-link" href="#Self-Driving-Car-Engineer-Nanodegree">&#182;</a></h1><h2 id="Project:-Finding-Lane-Lines-on-the-Road">Project: <strong>Finding Lane Lines on the Road</strong><a class="anchor-link" href="#Project:-Finding-Lane-Lines-on-the-Road">&#182;</a></h2><hr>
-<p>In the project below, I built a Python pipeline to identify lane lines in a video streams. The end goal is to be able to extract and draw the line equations which describe the left and right lane lines. Though not discussed formally in this project, my intuition on the significance of these two equations is that with them, a self-driving car is subsequently able to determine if the vehicle is within or outside of lane lines.</p>
-<p>Throughout this project, first we learn to detect and average lane lines through images, then we run our pipeline through a video stream.</p>
+<p>In the project below, I built a Python pipeline to identify lane lines in video streams. The end goal is to be able to extract and draw the line equations which describe the left and right lane lines. With these equations, a self-driving car would subsequently be able to determine if the vehicle is within or outside of its lane lines.</p>
+<p>First we learn to detect and average lane lines through <em>images</em>, then we run our pipeline through a <em>video stream</em>.</p>
 <hr>
 <ul>
 <li><p><a href="#image-analysis">Analyze Images</a></p>
@@ -11799,8 +11796,7 @@ div#notebook {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -11828,8 +11824,7 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -11837,8 +11832,7 @@ div#notebook {
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -11849,7 +11843,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">grayscale</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
@@ -11897,8 +11891,8 @@ div#notebook {
 
 <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Given the hough transformation line coordinates, </span>
-<span class="sd">    identifies what the left and right lane equations are and draws it out </span>
+<span class="sd">    Given the hough transformation array of line coordinates, </span>
+<span class="sd">    identifies what the left and right lane equations are and draws them out.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize empty lists</span>
     <span class="n">left_slope_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -11923,46 +11917,48 @@ div#notebook {
        
     <span class="c1">## Intercept Groupings Check ##</span>
     <span class="c1"># Part 1: ID Valid intercept Grouping #</span>
-    <span class="c1"># If there are parallel left lane lines (Consider a lane line, alongside a highway barrier shadow)</span>
-    <span class="c1"># Need to ID parrallel lines and only compute intercept based on the inner lane, </span>
-    <span class="c1"># Inner lane could be ID&#39;d by a larger intercept, since it crosses x=0 at a larger y</span>
+    <span class="c1"># Intuition: </span>
+    <span class="c1"># If there are parallel left lane lines (consider a lane line, alongside a highway barrier shadow),</span>
+    <span class="c1"># there should be noticable groupings in the intercept value.</span>
+    <span class="c1"># The inner lane could be ID&#39;d by a larger intercept, since it crosses x=0 at a larger y</span>
+    <span class="c1"># Otherwise, the function would take the average of the intercepts and slopes which could dramatically </span>
+    <span class="c1"># skew the identified left lane line. </span>
     <span class="n">temp_sorted_left_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">left_b_list</span><span class="p">)</span>
     
-    <span class="c1"># Debugging statements</span>
-    <span class="c1"># print(&#39;Sorted &#39;, type(temp_sorted_left_b) , temp_sorted_left_b)</span>
-    
     <span class="c1"># After sorting all intercepts, find the consecutive differences between each element</span>
-    <span class="c1"># Intuition: If there are parrallel lines, there should be noticable groupings in the intercept values</span>
-    <span class="c1"># Our goal is to ID the larger grouping values and only use those</span>
-    <span class="c1"># If the parrallel lines are close together, then we can take an average of them and it will be fine</span>
+    <span class="c1"># Intuition: </span>
     <span class="c1"># If the parrallel lines are spaced apart, then if we take the average of them, we will result in a skewed lane line.</span>
     <span class="c1"># 100 is an aribrary value that currently suffices to ID parrallel lines that are spaced apart</span>
+    <span class="c1"># It would be good downstream to experiment with this value and tune it further based on more training sets.</span>
     <span class="n">temp_sorted_left_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">temp_sorted_left_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">temp_sorted_left_b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     
-    <span class="c1"># If there are multiple groupings, iteratively review the largest grouping</span>
-    <span class="c1"># If there are fewer than 3 elements in that grouping, then it is not a significant line and should be discarded</span>
+    <span class="c1"># Previous hough lane and canny parameters should have removed most outliers. This function assumes</span>
+    <span class="c1"># that the groupings collected at this point represent actual lines that should be considered. </span>
+    <span class="c1"># Since we want the larger lane lines, extract them here.</span>
     <span class="k">if</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp_sorted_left_b</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">):</span>
   
         <span class="c1"># Part 2: Given ID&#39;d intercept grouping, collect associated slope #</span>
-        <span class="c1"># Update with new relevant values after intercept groupings check </span>
-        
         <span class="c1"># Find original indices for intercept elements so we can retrieve related slope </span>
         <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">left_b_list</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">temp_sorted_left_b</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">temp_sorted_left_b</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
         <span class="n">left_slope_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">left_slope_list</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span>
         <span class="n">left_b_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">left_b_list</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span>
-
     <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># No groupings ID&#39;d, take the original lists</span>
         <span class="n">left_b_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">left_b_list</span><span class="p">)</span>
         <span class="n">left_slope_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">left_slope_list</span><span class="p">)</span>
     
-    <span class="c1"># Calculate average slope</span>
+    <span class="c1"># Calculate median slope</span>
     <span class="n">left_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">left_slope_array</span><span class="p">)</span>
     
+    <span class="c1"># Remove outliers</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">left_slope_array</span><span class="p">)):</span>
-        <span class="c1"># Remove outliers</span>
-        
-        <span class="c1"># Arbitrary value: if slope is within +/- 10 of the median, should be ok</span>
+               
+        <span class="c1"># Arbitrary value: if slope is within +/- 20% of the median, should be ok</span>
+        <span class="c1"># Might be better to tune this value to some constant rather than a relative value.</span>
+        <span class="c1"># Since slopes can range from something like -0.3 (left lane) to 400 (right lane),</span>
+        <span class="c1"># 20% is pretty arbitrary and inconsistent. </span>
+        <span class="c1"># Nevertheless, I kept it here because it worked fairly well on the test videos</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">left_slope_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">left_slope</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">left_slope</span><span class="p">)</span><span class="o">*.</span><span class="mi">2</span><span class="p">:</span>
 
             <span class="c1"># Set slope to 0, will be discarded later</span>
@@ -11972,12 +11968,14 @@ div#notebook {
             <span class="c1">#nothing deleted, increase increment</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
                     
-    <span class="c1"># Calculate average intercept</span>
+    <span class="c1"># Calculate median intercept</span>
     <span class="n">left_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">)</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">)):</span>
-        <span class="c1"># Arbitrary value, if intercept is within +/- 50 pixels of the median, should be ok</span>
+        <span class="c1"># Arbitrary value, if intercept is within +/- 15 pixels of the median, should be ok</span>
+        <span class="c1"># Using 15 px rather than a percentage of the original intercept to make the algorithm behave similarly</span>
+        <span class="c1"># for large and small intercepts.</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">left_b</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
             <span class="n">left_slope_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">left_slope_array</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">left_b_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -11991,29 +11989,14 @@ div#notebook {
     
     <span class="c1">### --------------------------------------------------------------------------------- ###</span>
     <span class="c1">### Repeat above for the right side ###</span>
-    <span class="c1">## Intercept Groupings Check ##</span>
-    <span class="c1"># Part 1: ID Valid intercept Grouping #</span>
-    <span class="c1"># If there are parallel right lane lines (Consider a lane line, alongside a highway barrier shadow)</span>
-    <span class="c1"># Need to ID parrallel lines and only compute intercept based on the inner lane, </span>
-    <span class="c1"># Inner lane could be ID&#39;d by a larger intercept, since it crosses x=0 at a larger y</span>
     <span class="n">temp_sorted_right_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">right_b_list</span><span class="p">)</span>
 
-    <span class="c1"># After sorting all intercepts, find the consecutive differences between each element</span>
-    <span class="c1"># Intuition: If there are parrallel lines, there should be noticable groupings in the intercept values</span>
-    <span class="c1"># Our goal is to ID the larger grouping values and only use those</span>
-    <span class="c1"># If the parrallel lines are close together, then we can take an average of them and it will be fine</span>
-    <span class="c1"># If the parrallel lines are spaced apart, then if we take the average of them, we will result in a skewed lane line.</span>
-    <span class="c1"># 100 is an aribrary value that currently suffices to ID parrallel lines that are spaced apart</span>
+    <span class="c1"># Get groupings</span>
     <span class="n">temp_sorted_right_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">temp_sorted_right_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">temp_sorted_right_b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     
-    <span class="c1"># If there are multiple groupings, iteratively review the largest grouping</span>
-    <span class="c1"># If there are fewer than 3 elements in that grouping, then it is not a significant line and should be discarded</span>
+    <span class="c1"># Get the smaller groupings to find the right lane</span>
     <span class="k">if</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp_sorted_right_b</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">):</span>
-    
-        <span class="c1"># Part 2: Given ID&#39;d intercept grouping, collect associated slope #</span>
-        <span class="c1"># Update with new relevant values after intercept groupings check </span>
-        <span class="c1"># Want lowest groupings now, so first index</span>
-        
+ 
         <span class="c1"># Find original indices for intercept elements so we can retrieve related slope </span>
         <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">right_b_list</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">temp_sorted_right_b</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
         <span class="n">right_slope_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">right_slope_list</span><span class="p">)[</span><span class="n">indices</span><span class="p">]</span>
@@ -12023,13 +12006,13 @@ div#notebook {
         <span class="n">right_b_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">right_b_list</span><span class="p">)</span>
         <span class="n">right_slope_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">right_slope_list</span><span class="p">)</span>
     
-    <span class="c1"># Calculate average slope</span>
+    <span class="c1"># Calculate median slope</span>
     <span class="n">right_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">right_slope_array</span><span class="p">)</span>
     
+    <span class="c1"># Remove outliers</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-
     <span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">right_slope_array</span><span class="p">)):</span>
-        <span class="c1"># Remove outliers</span>
+        
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">right_slope_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">right_slope</span><span class="p">))</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">right_slope</span><span class="p">)</span><span class="o">*.</span><span class="mi">2</span><span class="p">:</span>
 
             <span class="c1"># Set slope to 0, will be discarded later</span>
@@ -12041,8 +12024,7 @@ div#notebook {
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
          
 
-            
-    <span class="c1"># Calculate average intercept</span>
+    <span class="c1"># Calculate median intercept</span>
     <span class="n">right_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">right_b_array</span><span class="p">)</span>
 
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -12055,6 +12037,7 @@ div#notebook {
             <span class="c1">#nothing deleted, increase increment</span>
             <span class="n">i</span> <span class="o">+=</span><span class="mi">1</span>
     
+    <span class="c1"># Get final average right slope/intercept</span>
     <span class="n">right_slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">right_slope_array</span><span class="p">)</span>
     <span class="n">right_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">right_b_array</span><span class="p">)</span>
 
@@ -12101,8 +12084,7 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -12114,7 +12096,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Reading in an image</span>
@@ -12134,7 +12116,9 @@ div#notebook {
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>This image is: &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (540, 960, 3)
@@ -12143,18 +12127,22 @@ div#notebook {
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[3]:</div>
+
+<div class="prompt output_prompt">Out[35]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x800fbe0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e53eb95048&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -13724,19 +13712,19 @@ K2ODIAgqTu6pmyAIgqDLRKIPgiCoOJHogyAIKk4k+iAIgooTiT4IgqDiRKIPgiCoOJHogyAIKk4k
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-1:-Convert-to-grayscale">Step 1: <a name="grayscaling">Convert to grayscale</a><a class="anchor-link" href="#Step-1:-Convert-to-grayscale">&#182;</a></h6><p>Since lane lines can appear in many colors and shades, we convert our image from an RGB image to Grayscale. This simplifies the image so that we could more easily detect edges in the image which could be lane lines.</p>
+<h6 id="Step-1:-Convert-to-grayscale">Step 1: <a name="grayscaling">Convert to grayscale</a><a class="anchor-link" href="#Step-1:-Convert-to-grayscale">&#182;</a></h6><p>Since lane lines can appear in many colors and shades, we convert our image from an RGB image to a grayscale image. This simplifies the image so that we could more easily detect edges in the image which could be lane lines.</p>
+<p>Further down, I noticed that converting the leftYellowSolid.mp4 video from its original color frame to grayscale was not sufficient to bring out the yellow edges. Consequently, I ended up splitting the RGB channels and only used the red and green values as input to the grayscale function. This seemed to make it easier for the pipeline to detect both yellow and white lane lines.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convert the current image to grayscale &amp; plot</span>
@@ -13754,7 +13742,9 @@ K2ODIAgqTu6pmyAIgqDLRKIPgiCoOJHogyAIKk4k+iAIgooTiT4IgqDiRKIPgiCoOJHogyAIKk4k
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>This image is: &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (540, 960)
@@ -13763,18 +13753,22 @@ K2ODIAgqTu6pmyAIgqDLRKIPgiCoOJHogyAIKk4k+iAIgooTiT4IgqDiRKIPgiCoOJHogyAIKk4k
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[4]:</div>
+
+<div class="prompt output_prompt">Out[36]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x9589be0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e545249ac8&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -14756,24 +14750,22 @@ Ry7oc+TIkWOcIxf0OXLkyDHOkQv6HDly5BjnyAV9jhw5coxz5II+R44cOcY5ckGfI0eOHOMc/wfg
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-2:-Apply-Gaussian-Filter">Step 2: <a name="gaussian-smoothing">Apply Gaussian Filter</a><a class="anchor-link" href="#Step-2:-Apply-Gaussian-Filter">&#182;</a></h6><p>I used a larger kernel size here to exagerate the effects of applying a Guassian Filter, just for visual purposes. In the actual pipeline below, only a kernel size of 3 is used.</p>
-<p>The Guassian Filter kernel is a matrix which represents the Gaussian curve that is <a href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/convolve.htm" >convoluted</a> over the image to remove noise. A larger kernel will smooth the image more, but also renders the image more fuzzy, and therefore the edges harder to detect, and if detected, less accurate. Once this mask is applied, pixels in the image are blurred, such that small variances between pixels are muted, and larger differences are easier to capture. To read more about through</p>
+<h6 id="Step-2:-Apply-Gaussian-Filter">Step 2: <a name="gaussian-smoothing">Apply Gaussian Filter</a><a class="anchor-link" href="#Step-2:-Apply-Gaussian-Filter">&#182;</a></h6><p>I used a larger kernel size (15) here to exagerate the effects of applying a Guassian Filter. In the actual pipeline below, we use a kernel with size 7.</p>
+<p>The Guassian Filter kernel is a matrix which represents the Gaussian curve that is <a href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/convolve.htm" >convoluted</a> over the image to remove noise. A larger kernel will smooth the image more, but also renders the image more fuzzy, and therefore the edges harder to detect-- and if detected, less accurate. Once this mask is applied, pixels in the image are blurred, such that small variances between pixels are muted, and larger differences are easier to capture.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a kernel size for Gaussian smoothing / blurring</span>
-<span class="c1"># </span>
 <span class="n">kernel_size</span> <span class="o">=</span><span class="mi">15</span><span class="c1"># Must be an odd number (3, 5, 7...)</span>
 <span class="n">blur_gray</span> <span class="o">=</span> <span class="n">gaussian_blur</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This image is:&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="s1">&#39;with dimensions:&#39;</span><span class="p">,</span> <span class="n">blur_gray</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -14789,7 +14781,9 @@ Ry7oc+TIkWOcIxf0OXLkyDHOkQv6HDly5BjnyAV9jhw5coxz5II+R44cOcY5ckGfI0eOHOMc/wfg
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>This image is: &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (540, 960)
@@ -14798,18 +14792,22 @@ Ry7oc+TIkWOcIxf0OXLkyDHOkQv6HDly5BjnyAV9jhw5coxz5II+R44cOcY5ckGfI0eOHOMc/wfg
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[5]:</div>
+
+<div class="prompt output_prompt">Out[37]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x95e7128&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e5452aada0&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -15548,19 +15546,18 @@ Ouqoo47XHHWir6OOOup4zVEn+jrqqKOO1xz/HyOAhGTw669CAAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">Step 3: <a name="canny-edge-detection">Detect Edges using Canny Edge Detection Algorithm</a><a class="anchor-link" href="#Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">&#182;</a></h6><p>The canny edge detection algorithm takes two threshould <em>t1</em> &amp; <em>t2</em>, where <em>t1&gt;t2</em>. All pixels with intensity below <em>t2</em> are blacked out. looks for the first order gradients of a pixel, by finding the difference between the pixels intensity vs the intensity of the four pixels adjacent to it.</p>
+<h6 id="Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">Step 3: <a name="canny-edge-detection">Detect Edges using Canny Edge Detection Algorithm</a><a class="anchor-link" href="#Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">&#182;</a></h6><p>The canny edge detection algorithm first calculates the gradients, or changes in intensity between pixels. From these gradients, it takes two threshould <em>t1</em> &amp; <em>t2</em>, where <em>t1&gt;t2</em>. All pixels with gradients below <em>t2</em> are blacked out. Pixels between <em>t1</em> and <em>t2</em> are set to 255 (white) if they are adjacent to a pixel that has a gradient larger than <em>t2</em>. Read the <a href="http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html">opencv documentation</a> for more information.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">low_threshold</span><span class="o">=</span><span class="mi">100</span>
@@ -15579,7 +15576,9 @@ Ouqoo47XHHWir6OOOup4zVEn+jrqqKOO1xz/HyOAhGTw669CAAAAAElFTkSuQmCC
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>This image is: &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (540, 960)
@@ -15588,18 +15587,22 @@ Ouqoo47XHHWir6OOOup4zVEn+jrqqKOO1xz/HyOAhGTw669CAAAAAElFTkSuQmCC
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+
+<div class="prompt output_prompt">Out[38]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x9647c50&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e54530af60&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -15689,29 +15692,19 @@ L0mdM+glqXMGvSR17v8BN5sLjTMxgEEAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since we had run a kernel of size 21 previously, the image is quite blurry and now the detected lines are not very clear. I replicate the steps below using a smaller kernel size to demonstrate the difference.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-3:-Extract-Region-of-Interest">Step 3: <a name="region-of-interest">Extract Region of Interest</a><a class="anchor-link" href="#Step-3:-Extract-Region-of-Interest">&#182;</a></h6><p>For the scope of finding lane lines, we are predominatly interested in the quadrilateral shape below. We now black out all pixels outside of the region directly in front the car camera, (which we assume is mounted at the center front of the car). This will help minimize other lines which may add confusing lines to our draw_lines function downstream, and subseqently skew the detected lane lines.</p>
+<h6 id="Step-3:-Extract-Region-of-Interest">Step 3: <a name="region-of-interest">Extract Region of Interest</a><a class="anchor-link" href="#Step-3:-Extract-Region-of-Interest">&#182;</a></h6><p>For this project, we are interested in the quadrilateral region in front of the car where a typical lane line will appear. We now black out all pixels outside the region directly in front the car camera, (which we assume is mounted at the center front of the car). This will help minimize other lines which may confuse our draw_lines function downstream and skew the detected lane lines.</p>
+<p>*In the challenge video, we had to redefine the region to ignore the bottom 100 pixels of the image since the hood of the car was visible in the video. If we did not do this, the edges of the hood would have skewed our detected lane lines.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define Vertices of the Region of Interest</span>
@@ -15733,7 +15726,9 @@ L0mdM+glqXMGvSR17v8BN5sLjTMxgEEAAAAASUVORK5CYII=
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>This image is: &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (540, 960)
@@ -15742,18 +15737,22 @@ L0mdM+glqXMGvSR17v8BN5sLjTMxgEEAAAAASUVORK5CYII=
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[7]:</div>
+
+<div class="prompt output_prompt">Out[39]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x98ccef0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e545371a90&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -15842,8 +15841,7 @@ AAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -15851,9 +15849,19 @@ AAAAAElFTkSuQmCC
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While testing this pipeline, the parameters below seemed to find the lane lines most precisely. 
+Nevertheless, these parameters could be further tuned with additional training data.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get Lines with Hough</span>
@@ -15876,18 +15884,22 @@ AAAAAElFTkSuQmCC
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[8]:</div>
+
+<div class="prompt output_prompt">Out[40]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x9f24198&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e5447e1630&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -15993,7 +16005,7 @@ S1LHGfSS1HH/DydKIOZgL6QPAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get Final Image</span>
@@ -16011,18 +16023,22 @@ S1LHGfSS1HH/DydKIOZgL6QPAAAAAElFTkSuQmCC
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
+
+<div class="prompt output_prompt">Out[41]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x9f7eda0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e53e8f4278&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -17590,20 +17606,18 @@ AElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="All-Images"><a name="all-images">All Images</a><a class="anchor-link" href="#All-Images">&#182;</a></h3><p>Build the pipeline and run your solution on all test_images. Make copies into the <code>test_images_output</code> directory, and you can use the images in your writeup report.</p>
-<p>Try tuning the various parameters, especially the low and high Canny thresholds as well as the Hough lines parameters.</p>
+<h3 id="All-Images"><a name="all-images">All Images</a><a class="anchor-link" href="#All-Images">&#182;</a></h3><p>Here we test our solution on all test_images and make copies into the <code>test_images_output</code> directory.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;test_images/&quot;</span><span class="p">)</span>
@@ -17618,7 +17632,9 @@ AElFTkSuQmCC
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[10]:</div>
+
+<div class="prompt output_prompt">Out[42]:</div>
+
 
 
 
@@ -17639,14 +17655,18 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_image_folder</span> <span class="o">=</span> <span class="s2">&quot;test_images/&quot;</span>
 <span class="n">test_image_output_folder</span> <span class="o">=</span> <span class="s2">&quot;test_images_output/&quot;</span>
 
+<span class="c1"># Create output folder if it doesn&#39;t exist</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">test_image_output_folder</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">test_image_output_folder</span><span class="p">)</span>
+
 <span class="c1"># Define a kernel size for Gaussian smoothing / blurring</span>
-<span class="n">kernel_size</span> <span class="o">=</span><span class="mi">15</span><span class="c1"># Must be an odd number (3, 5, 7...)</span>
+<span class="n">kernel_size</span> <span class="o">=</span><span class="mi">7</span><span class="c1"># Must be an odd number (3, 5, 7...)</span>
 
 <span class="n">low_threshold</span><span class="o">=</span><span class="mi">100</span>
 <span class="n">high_threshold</span><span class="o">=</span><span class="mi">140</span>
@@ -17659,16 +17679,13 @@ AElFTkSuQmCC
 <span class="c1"># Hough Parameters</span>
 <span class="n">rho</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># Distance resolution of Hough space grid-- keeping 1 as base unit</span>
 <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span> <span class="c1"># Angular resolution of Hough space grid-- keeping as 1 deg base unit</span>
-<span class="n">threshold</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># Minimum number of intersections needed for a candidate line</span>
-<span class="n">min_line_len</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mi">35</span> <span class="c1"># Minimum number of intersections needed for a candidate line</span>
+<span class="n">min_line_len</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">max_line_gap</span> <span class="o">=</span> <span class="mi">10</span>
 
 <span class="c1">#Repeat above for all images:</span>
 <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_image_folder</span><span class="p">):</span>
     
-    <span class="c1"># TODO: Build your pipeline that will draw lane lines on the test_images</span>
-    <span class="c1"># then save them to the test_images directory.</span>
-
     <span class="c1"># Read in the image and convert to grayscale</span>
     <span class="c1"># Note: in the previous example we were reading a .jpg </span>
     <span class="c1"># Here we read a .png and convert to 0,255 bytescale</span>
@@ -17696,8 +17713,7 @@ AElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -17713,7 +17729,22 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Install imagio to use moviepy</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="n">imageio</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">ffmpeg</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import everything needed to edit/save/watch video clips</span>
@@ -17728,14 +17759,12 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="c1"># NOTE: The output you return should be a color image (3 channel) for processing video below</span>
-    <span class="c1"># TODO: put your pipeline here,</span>
-    <span class="c1"># you should return the final output (image where lines are drawn on lanes)</span>
-    
+
     <span class="c1"># Define a kernel size for Gaussian smoothing / blurring</span>
     <span class="n">kernel_size</span> <span class="o">=</span><span class="mi">7</span><span class="c1"># Must be an odd number (3, 5, 7...)</span>
 
@@ -17745,11 +17774,12 @@ AElFTkSuQmCC
     <span class="n">ysize</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">xsize</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="c1"># Explicitly set array datatypes to int 32, otherwise will default casut to 64 bit.</span>
-    <span class="c1"># Use this vertices definition if running the challenge video. We modified it here since the camera was mounted differently</span>
-    <span class="c1"># resulting in the edges of the hood to be detectable. By using the vertices definition below, we ignore the edges of the hood</span>
-    <span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">650</span><span class="p">],[</span><span class="n">xsize</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="n">ysize</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">],[</span><span class="n">xsize</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="n">ysize</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">],[</span><span class="n">xsize</span><span class="p">,</span> <span class="mi">650</span><span class="p">]]],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span> 
+    <span class="c1"># Use this vertices definition if running the challenge video. We modified it here since the camera was mounted </span>
+    <span class="c1"># differently, resulting in the edges of the hood to be detectable. </span>
+    <span class="c1"># By using the vertices definition below, we ignore the edges of the hood.</span>
+    <span class="c1"># vertices = np.array([[[0,650],[xsize*2/5,ysize*3/5],[xsize*3/5,ysize*3/5],[xsize, 650]]],dtype=np.int32) </span>
     <span class="c1"># Normal: Use this definition for the solidYellowLeft and SolidWhiteRight videos, since the hood is not visible</span>
-    <span class="c1"># vertices = np.array([[[0,ysize],[xsize*2/5,ysize*3/5],[xsize*3/5,ysize*3/5],[xsize, ysize]]],dtype=np.int32)</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="n">ysize</span><span class="p">],[</span><span class="n">xsize</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="n">ysize</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">],[</span><span class="n">xsize</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span><span class="n">ysize</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">5</span><span class="p">],[</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">]]],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 
     <span class="c1"># Hough Parameters</span>
     <span class="n">rho</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># Distance resolution of Hough space grid-- keeping 1 as base unit</span>
@@ -17762,13 +17792,6 @@ AElFTkSuQmCC
     
     <span class="c1"># Get Color Channels</span>
     <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-
-    <span class="c1"># TODO: Build your pipeline that will draw lane lines on the test_images</span>
-    <span class="c1"># then save them to the test_images directory.</span>
-
-    <span class="c1"># Read in the image and convert to grayscale</span>
-    <span class="c1"># Note: in the previous example we were reading a .jpg </span>
-    <span class="c1"># Here we read a .png and convert to 0,255 bytescale</span>
 
     <span class="c1"># Convert the current image to grayscale</span>
     <span class="c1"># This combination of RGB values brought out the yellow and white lines simulatesouly the best given my informal trials</span>
@@ -17802,8 +17825,7 @@ AElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -17814,7 +17836,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a kernel size for Gaussian smoothing / blurring</span>
@@ -17839,7 +17861,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="s2">&quot;test_videos/challenge.mp4&quot;</span><span class="p">)</span>
@@ -17861,18 +17883,22 @@ AElFTkSuQmCC
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+
+<div class="prompt output_prompt">Out[17]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xbd054e0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e53f63f240&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -19824,7 +19850,7 @@ AAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ysize</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -19855,7 +19881,9 @@ AAAASUVORK5CYII=
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Grayscale &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280)
@@ -19864,18 +19892,22 @@ AAAASUVORK5CYII=
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[16]:</div>
+
+<div class="prompt output_prompt">Out[18]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xbd62f60&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e53f536eb8&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -21489,7 +21521,7 @@ YbVyvkuPnTONiJ4A2T/7ycwcN/x7N4Cna0TUAwE8BMBf4BshB8+mE0Pn3RMhUSufA/DKs/08Z/jM
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">blur_gray</span> <span class="o">=</span> <span class="n">gaussian_blur</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">)</span>
@@ -21506,7 +21538,9 @@ YbVyvkuPnTONiJ4A2T/7ycwcN/x7N4Cna0TUAwE8BMBf4BshB8+mE0Pn3RMhUSufA/DKs/08Z/jM
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Guassian_blr &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280)
@@ -21515,18 +21549,22 @@ YbVyvkuPnTONiJ4A2T/7ycwcN/x7N4Cna0TUAwE8BMBf4BshB8+mE0Pn3RMhUSufA/DKs/08Z/jM
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[17]:</div>
+
+<div class="prompt output_prompt">Out[19]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xc202978&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e53f75f278&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -22898,7 +22936,7 @@ vwAPoO5fjVShGwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">canny</span><span class="p">(</span><span class="n">blur_gray</span><span class="p">,</span> <span class="n">low_threshold</span><span class="p">,</span> <span class="n">high_threshold</span><span class="p">)</span>
@@ -22915,7 +22953,9 @@ vwAPoO5fjVShGwAAAABJRU5ErkJggg==
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Canny &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280)
@@ -22924,18 +22964,22 @@ vwAPoO5fjVShGwAAAABJRU5ErkJggg==
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
+
+<div class="prompt output_prompt">Out[20]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xc45e748&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e543eda080&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -23074,7 +23118,7 @@ ejOznnPQm5n1nIPezKznHPRmZj3noDcz67n/D+mpdcBlU30OAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">region_select</span> <span class="o">=</span> <span class="n">region_of_interest</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
@@ -23091,7 +23135,9 @@ ejOznnPQm5n1nIPezKznHPRmZj3noDcz67n/D+mpdcBlU30OAAAAAElFTkSuQmCC
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Region Of INterest &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280)
@@ -23100,18 +23146,22 @@ ejOznnPQm5n1nIPezKznHPRmZj3noDcz67n/D+mpdcBlU30OAAAAAElFTkSuQmCC
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[19]:</div>
+
+<div class="prompt output_prompt">Out[21]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xc4c9438&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e543f3fcf8&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -23220,7 +23270,7 @@ Br0kdZxBL0kd9/8B40EKPiIwny4AAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lines</span> <span class="o">=</span> <span class="n">hough_lines</span><span class="p">(</span><span class="n">region_select</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">min_line_len</span><span class="p">,</span> <span class="n">max_line_gap</span><span class="p">)</span>
@@ -23237,7 +23287,9 @@ Br0kdZxBL0kd9/8B40EKPiIwny4AAAAASUVORK5CYII=
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Hough &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280, 3)
@@ -23246,18 +23298,22 @@ Br0kdZxBL0kd9/8B40EKPiIwny4AAAAASUVORK5CYII=
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[20]:</div>
+
+<div class="prompt output_prompt">Out[22]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xa9b41d0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e543faaa90&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -23377,7 +23433,7 @@ bM60FxoHfWesmVnDlV26MTOzgjnQm5k1nAO9mVnDOdCbmTWcA72ZWcM50JuZNZwDvZlZwznQm5k1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lines</span> <span class="o">=</span> <span class="n">region_of_interest</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span><span class="n">vertices</span><span class="p">)</span>
@@ -23395,7 +23451,9 @@ bM60FxoHfWesmVnDlV26MTOzgjnQm5k1nAO9mVnDOdCbmTWcA72ZWcM50JuZNZwDvZlZwznQm5k1
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Weighted &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280, 3)
@@ -23404,18 +23462,22 @@ bM60FxoHfWesmVnDlV26MTOzgjnQm5k1nAO9mVnDOdCbmTWcA72ZWcM50JuZNZwDvZlZwznQm5k1
 </div>
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
+
+<div class="prompt output_prompt">Out[23]:</div>
+
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0xaa19f28&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x1e53eae4828&gt;</pre>
 </div>
 
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 
 
@@ -25362,8 +25424,7 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -25373,10 +25434,18 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">white_output</span> <span class="o">=</span> <span class="s1">&#39;test_videos_output/solidWhiteRight.mp4&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create video Output folder</span>
+<span class="n">test_video_output_folder</span> <span class="o">=</span> <span class="s2">&quot;test_videos_output/&quot;</span>
+
+<span class="c1"># Create output folder if it doesn&#39;t exist</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">test_video_output_folder</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">test_video_output_folder</span><span class="p">)</span>
+<span class="n">white_output</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">solidWhiteRight.mp4&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">test_video_output_folder</span><span class="p">)</span>
+
+
 <span class="c1">## To speed up the testing process you may want to try your pipeline on a shorter subclip of the video</span>
 <span class="c1">## To do so add .subclip(start_second,end_second) to the end of the line below</span>
 <span class="c1">## Where start_second and end_second are integer values representing the start and end of the subclip</span>
@@ -25397,7 +25466,9 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[MoviePy] &gt;&gt;&gt;&gt; Building video test_videos_output/solidWhiteRight.mp4
@@ -25407,16 +25478,20 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
 
+
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|███████████████████████████████████████▊| 221/222 [00:07&lt;00:00, 26.49it/s]
+<pre>100%|█████████▉| 221/222 [00:04&lt;00:00, 44.94it/s]
 </pre>
 </div>
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[MoviePy] Done.
@@ -25430,8 +25505,7 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -25442,7 +25516,7 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -25461,7 +25535,9 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[23]:</div>
+
+<div class="prompt output_prompt">Out[49]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -25478,8 +25554,7 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -25489,7 +25564,7 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">yellow_output</span> <span class="o">=</span> <span class="s1">&#39;test_videos_output/solidYellowLeft.mp4&#39;</span>
@@ -25512,7 +25587,9 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[MoviePy] &gt;&gt;&gt;&gt; Building video test_videos_output/solidYellowLeft.mp4
@@ -25522,22 +25599,26 @@ lwdc9op+L3vZy14ecNkr+r3sZS97ecBlr+j3spe97OUBl/8Pp9dZTQB9UvIAAAAASUVORK5CYII=
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
 
+
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|███████████████████████████████████████▉| 681/682 [00:29&lt;00:00, 27.70it/s]
+<pre>100%|█████████▉| 681/682 [00:14&lt;00:00, 46.32it/s]
 </pre>
 </div>
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[MoviePy] Done.
 [MoviePy] &gt;&gt;&gt;&gt; Video ready: test_videos_output/solidYellowLeft.mp4 
 
-Wall time: 30.5 s
+Wall time: 15.3 s
 </pre>
 </div>
 </div>
@@ -25548,7 +25629,7 @@ Wall time: 30.5 s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -25567,7 +25648,9 @@ Wall time: 30.5 s
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[39]:</div>
+
+<div class="prompt output_prompt">Out[50]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -25584,8 +25667,7 @@ Wall time: 30.5 s
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -25595,7 +25677,7 @@ Wall time: 30.5 s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># need to change this video&#39;s mask because camera is mounted differently, adding new confusing horizontal edges</span>
@@ -25622,7 +25704,9 @@ Wall time: 30.5 s
 
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[MoviePy] &gt;&gt;&gt;&gt; Building video test_videos_output/challenge.mp4
@@ -25632,22 +25716,26 @@ Wall time: 30.5 s
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
 
+
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|████████████████████████████████████████| 251/251 [00:19&lt;00:00, 13.41it/s]
+<pre>100%|██████████| 251/251 [00:10&lt;00:00, 25.70it/s]
 </pre>
 </div>
 </div>
 
 <div class="output_area">
+
 <div class="prompt"></div>
+
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[MoviePy] Done.
 [MoviePy] &gt;&gt;&gt;&gt; Video ready: test_videos_output/challenge.mp4 
 
-Wall time: 22.3 s
+Wall time: 11.2 s
 </pre>
 </div>
 </div>
@@ -25658,7 +25746,7 @@ Wall time: 22.3 s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
@@ -25677,7 +25765,9 @@ Wall time: 22.3 s
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[28]:</div>
+
+<div class="prompt output_prompt">Out[33]:</div>
+
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -25690,19 +25780,6 @@ Wall time: 22.3 s
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-</div>
 </div>
 </div>
 
