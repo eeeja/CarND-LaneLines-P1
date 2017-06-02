@@ -11806,7 +11806,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#importing some useful packages</span>
@@ -11843,7 +11843,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">grayscale</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
@@ -11903,7 +11903,7 @@ div#notebook {
     <span class="c1"># Calculate slopes and categorize as left or right if != 0 </span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-            <span class="c1"># If x1=x2, then slope will be inf--&gt; Won&#39;t consider perfectly vertical lines in this project</span>
+            <span class="c1"># If x1=x2, then slope will be infinity--&gt; Won&#39;t consider perfectly vertical lines in this project</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">x1</span><span class="o">!=</span><span class="n">x2</span><span class="p">):</span>
                 <span class="n">temp_slope</span> <span class="o">=</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span>
                 <span class="c1"># Decreasing slope = most likely left lane</span>
@@ -11920,15 +11920,15 @@ div#notebook {
     <span class="c1"># Intuition: </span>
     <span class="c1"># If there are parallel left lane lines (consider a lane line, alongside a highway barrier shadow),</span>
     <span class="c1"># there should be noticable groupings in the intercept value.</span>
-    <span class="c1"># The inner lane could be ID&#39;d by a larger intercept, since it crosses x=0 at a larger y</span>
+    <span class="c1"># The inner lane could be ID&#39;d by a larger intercept, since it crosses x=0 at a larger y.</span>
     <span class="c1"># Otherwise, the function would take the average of the intercepts and slopes which could dramatically </span>
     <span class="c1"># skew the identified left lane line. </span>
     <span class="n">temp_sorted_left_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">left_b_list</span><span class="p">)</span>
     
     <span class="c1"># After sorting all intercepts, find the consecutive differences between each element</span>
     <span class="c1"># Intuition: </span>
-    <span class="c1"># If the parrallel lines are spaced apart, then if we take the average of them, we will result in a skewed lane line.</span>
-    <span class="c1"># 100 is an aribrary value that currently suffices to ID parrallel lines that are spaced apart</span>
+    <span class="c1"># If the parallel lines are spaced apart, then if we take the average of them, we will result in a skewed lane line.</span>
+    <span class="c1"># 100 is an aribrary value that currently suffices to ID parallel lines that are spaced apart</span>
     <span class="c1"># It would be good downstream to experiment with this value and tune it further based on more training sets.</span>
     <span class="n">temp_sorted_left_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">temp_sorted_left_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">temp_sorted_left_b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     
@@ -11954,7 +11954,7 @@ div#notebook {
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">left_slope_array</span><span class="p">)):</span>
                
-        <span class="c1"># Arbitrary value: if slope is within +/- 20% of the median, should be ok</span>
+        <span class="c1"># If slope is within +/- 20% of the median, should be ok</span>
         <span class="c1"># Might be better to tune this value to some constant rather than a relative value.</span>
         <span class="c1"># Since slopes can range from something like -0.3 (left lane) to 400 (right lane),</span>
         <span class="c1"># 20% is pretty arbitrary and inconsistent. </span>
@@ -11973,9 +11973,9 @@ div#notebook {
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">)):</span>
-        <span class="c1"># Arbitrary value, if intercept is within +/- 15 pixels of the median, should be ok</span>
+        <span class="c1"># If intercept is within +/- 15 pixels of the median, should be ok</span>
         <span class="c1"># Using 15 px rather than a percentage of the original intercept to make the algorithm behave similarly</span>
-        <span class="c1"># for large and small intercepts.</span>
+        <span class="c1"># for large and small intercepts. This constant can be further tuned with additional training data.</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">left_b</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
             <span class="n">left_slope_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">left_slope_array</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">left_b_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">left_b_array</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
@@ -12096,7 +12096,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Reading in an image</span>
@@ -12128,13 +12128,13 @@ div#notebook {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[35]:</div>
+<div class="prompt output_prompt">Out[4]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e53eb95048&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e67cdd7f0&gt;</pre>
 </div>
 
 </div>
@@ -13724,7 +13724,7 @@ K2ODIAgqTu6pmyAIgqDLRKIPgiCoOJHogyAIKk4k+iAIgooTiT4IgqDiRKIPgiCoOJHogyAIKk4k
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convert the current image to grayscale &amp; plot</span>
@@ -13754,13 +13754,13 @@ K2ODIAgqTu6pmyAIgqDLRKIPgiCoOJHogyAIKk4k+iAIgooTiT4IgqDiRKIPgiCoOJHogyAIKk4k
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[36]:</div>
+<div class="prompt output_prompt">Out[5]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e545249ac8&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e693a56d8&gt;</pre>
 </div>
 
 </div>
@@ -14754,15 +14754,15 @@ Ry7oc+TIkWOcIxf0OXLkyDHOkQv6HDly5BjnyAV9jhw5coxz5II+R44cOcY5ckGfI0eOHOMc/wfg
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-2:-Apply-Gaussian-Filter">Step 2: <a name="gaussian-smoothing">Apply Gaussian Filter</a><a class="anchor-link" href="#Step-2:-Apply-Gaussian-Filter">&#182;</a></h6><p>I used a larger kernel size (15) here to exagerate the effects of applying a Guassian Filter. In the actual pipeline below, we use a kernel with size 7.</p>
-<p>The Guassian Filter kernel is a matrix which represents the Gaussian curve that is <a href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/convolve.htm" >convoluted</a> over the image to remove noise. A larger kernel will smooth the image more, but also renders the image more fuzzy, and therefore the edges harder to detect-- and if detected, less accurate. Once this mask is applied, pixels in the image are blurred, such that small variances between pixels are muted, and larger differences are easier to capture.</p>
+<h6 id="Step-2:-Apply-Gaussian-Filter">Step 2: <a name="gaussian-smoothing">Apply Gaussian Filter</a><a class="anchor-link" href="#Step-2:-Apply-Gaussian-Filter">&#182;</a></h6><p>I used a larger kernel size (15) here to exagerate the effects of applying a Gaussian Filter. In the actual pipeline below, we use a kernel with size 7.</p>
+<p>The Gaussian Filter kernel is a matrix which represents the Gaussian curve that is <a href="http://homepages.inf.ed.ac.uk/rbf/HIPR2/convolve.htm" >convoluted</a> over the image to remove noise. A larger kernel will smooth the image more, but also renders the image more fuzzy, and therefore the edges harder to detect-- and if detected, less accurate. Once this mask is applied, pixels in the image are blurred, such that small variances between pixels are muted, and larger differences are easier to capture.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a kernel size for Gaussian smoothing / blurring</span>
@@ -14793,13 +14793,13 @@ Ry7oc+TIkWOcIxf0OXLkyDHOkQv6HDly5BjnyAV9jhw5coxz5II+R44cOcY5ckGfI0eOHOMc/wfg
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[37]:</div>
+<div class="prompt output_prompt">Out[6]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e5452aada0&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e693fecf8&gt;</pre>
 </div>
 
 </div>
@@ -15550,14 +15550,14 @@ Ouqoo47XHHWir6OOOup4zVEn+jrqqKOO1xz/HyOAhGTw669CAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h6 id="Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">Step 3: <a name="canny-edge-detection">Detect Edges using Canny Edge Detection Algorithm</a><a class="anchor-link" href="#Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">&#182;</a></h6><p>The canny edge detection algorithm first calculates the gradients, or changes in intensity between pixels. From these gradients, it takes two threshould <em>t1</em> &amp; <em>t2</em>, where <em>t1&gt;t2</em>. All pixels with gradients below <em>t2</em> are blacked out. Pixels between <em>t1</em> and <em>t2</em> are set to 255 (white) if they are adjacent to a pixel that has a gradient larger than <em>t2</em>. Read the <a href="http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html">opencv documentation</a> for more information.</p>
+<h6 id="Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">Step 3: <a name="canny-edge-detection">Detect Edges using Canny Edge Detection Algorithm</a><a class="anchor-link" href="#Step-3:-Detect-Edges-using-Canny-Edge-Detection-Algorithm">&#182;</a></h6><p>The canny edge detection algorithm first calculates the gradients, or changes in intensity between pixels. From these gradients, it takes two threshold <em>t1</em> &amp; <em>t2</em>, where <em>t1&gt;t2</em>. All pixels with gradients below <em>t2</em> are blacked out. Pixels between <em>t1</em> and <em>t2</em> are set to 255 (white) if they are adjacent to a pixel that has a gradient larger than <em>t2</em>. Read the <a href="http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html">opencv documentation</a> for more information.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">low_threshold</span><span class="o">=</span><span class="mi">100</span>
@@ -15588,13 +15588,13 @@ Ouqoo47XHHWir6OOOup4zVEn+jrqqKOO1xz/HyOAhGTw669CAAAAAElFTkSuQmCC
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[38]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e54530af60&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e69463940&gt;</pre>
 </div>
 
 </div>
@@ -15704,7 +15704,7 @@ L0mdM+glqXMGvSR17v8BN5sLjTMxgEEAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define Vertices of the Region of Interest</span>
@@ -15738,13 +15738,13 @@ L0mdM+glqXMGvSR17v8BN5sLjTMxgEEAAAAASUVORK5CYII=
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[39]:</div>
+<div class="prompt output_prompt">Out[10]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e545371a90&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e69728080&gt;</pre>
 </div>
 
 </div>
@@ -15861,7 +15861,7 @@ Nevertheless, these parameters could be further tuned with additional training d
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get Lines with Hough</span>
@@ -15885,13 +15885,13 @@ Nevertheless, these parameters could be further tuned with additional training d
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[40]:</div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e5447e1630&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e69784160&gt;</pre>
 </div>
 
 </div>
@@ -17617,7 +17617,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;test_images/&quot;</span><span class="p">)</span>
@@ -17633,7 +17633,7 @@ AElFTkSuQmCC
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[42]:</div>
+<div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -17655,7 +17655,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_image_folder</span> <span class="o">=</span> <span class="s2">&quot;test_images/&quot;</span>
@@ -17729,7 +17729,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Install imagio to use moviepy</span>
@@ -17744,7 +17744,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import everything needed to edit/save/watch video clips</span>
@@ -17759,7 +17759,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
@@ -17786,7 +17786,6 @@ AElFTkSuQmCC
     <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span> <span class="c1"># Angular resolution of Hough space grid-- keeping as 1 deg base unit</span>
     <span class="c1"># Chose 35 because it seems to catch longer lines and not little dashes which might through off the slope estimate</span>
     <span class="n">threshold</span> <span class="o">=</span> <span class="mi">35</span> <span class="c1"># Minimum number of intersections needed for a candidate line</span>
-    <span class="c1"># Arbitrary values-- seemed to catch concrete lines</span>
     <span class="n">min_line_len</span> <span class="o">=</span> <span class="mi">30</span>
     <span class="n">max_line_gap</span> <span class="o">=</span> <span class="mi">25</span>
     
@@ -17800,7 +17799,7 @@ AElFTkSuQmCC
     <span class="c1"># print(&#39;Grayscale&#39;, type(image), &#39;with dimensions:&#39;, gray.shape)</span>
     
     <span class="n">blur_gray</span> <span class="o">=</span> <span class="n">gaussian_blur</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">)</span>
-    <span class="c1"># print(&#39;Guassian_blr&#39;, type(image), &#39;with dimensions:&#39;, blur_gray.shape)</span>
+    <span class="c1"># print(&#39;Gaussian_blr&#39;, type(image), &#39;with dimensions:&#39;, blur_gray.shape)</span>
 
     <span class="n">edges</span> <span class="o">=</span> <span class="n">canny</span><span class="p">(</span><span class="n">blur_gray</span><span class="p">,</span> <span class="n">low_threshold</span><span class="p">,</span> <span class="n">high_threshold</span><span class="p">)</span>
     <span class="c1"># print(&#39;Canny&#39;, type(image), &#39;with dimensions:&#39;, edges.shape)</span>
@@ -17836,7 +17835,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Define a kernel size for Gaussian smoothing / blurring</span>
@@ -17861,7 +17860,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="s2">&quot;test_videos/challenge.mp4&quot;</span><span class="p">)</span>
@@ -17884,13 +17883,13 @@ AElFTkSuQmCC
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[17]:</div>
+<div class="prompt output_prompt">Out[20]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e53f63f240&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e6ebf6710&gt;</pre>
 </div>
 
 </div>
@@ -19850,7 +19849,7 @@ AAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ysize</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -19866,10 +19865,6 @@ AAAASUVORK5CYII=
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Grayscale&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="s1">&#39;with dimensions:&#39;</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
-
-
-<span class="c1">#output = process_image(frame)</span>
-<span class="c1">#plt.imshow(output)</span>
 </pre></div>
 
 </div>
@@ -19893,13 +19888,13 @@ AAAASUVORK5CYII=
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[18]:</div>
+<div class="prompt output_prompt">Out[21]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e53f536eb8&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e6ef19d68&gt;</pre>
 </div>
 
 </div>
@@ -21521,11 +21516,11 @@ YbVyvkuPnTONiJ4A2T/7ycwcN/x7N4Cna0TUAwE8BMBf4BshB8+mE0Pn3RMhUSufA/DKs/08Z/jM
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">blur_gray</span> <span class="o">=</span> <span class="n">gaussian_blur</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guassian_blr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">blur_gray</span><span class="p">),</span> <span class="s1">&#39;with dimensions:&#39;</span><span class="p">,</span> <span class="n">blur_gray</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gaussian_blr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">blur_gray</span><span class="p">),</span> <span class="s1">&#39;with dimensions:&#39;</span><span class="p">,</span> <span class="n">blur_gray</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">blur_gray</span><span class="p">)</span>
 </pre></div>
 
@@ -21543,20 +21538,20 @@ YbVyvkuPnTONiJ4A2T/7ycwcN/x7N4Cna0TUAwE8BMBf4BshB8+mE0Pn3RMhUSufA/DKs/08Z/jM
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Guassian_blr &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280)
+<pre>Gaussian_blr &lt;class &#39;numpy.ndarray&#39;&gt; with dimensions: (720, 1280)
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt output_prompt">Out[22]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e53f75f278&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e6ef8aa90&gt;</pre>
 </div>
 
 </div>
@@ -22936,7 +22931,7 @@ vwAPoO5fjVShGwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">canny</span><span class="p">(</span><span class="n">blur_gray</span><span class="p">,</span> <span class="n">low_threshold</span><span class="p">,</span> <span class="n">high_threshold</span><span class="p">)</span>
@@ -22965,13 +22960,13 @@ vwAPoO5fjVShGwAAAABJRU5ErkJggg==
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[20]:</div>
+<div class="prompt output_prompt">Out[23]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e543eda080&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e6eff5710&gt;</pre>
 </div>
 
 </div>
@@ -23118,7 +23113,7 @@ ejOznnPQm5n1nIPezKznHPRmZj3noDcz67n/D+mpdcBlU30OAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">region_select</span> <span class="o">=</span> <span class="n">region_of_interest</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
@@ -23147,13 +23142,13 @@ ejOznnPQm5n1nIPezKznHPRmZj3noDcz67n/D+mpdcBlU30OAAAAAElFTkSuQmCC
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[21]:</div>
+<div class="prompt output_prompt">Out[24]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e543f3fcf8&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e6f060390&gt;</pre>
 </div>
 
 </div>
@@ -23270,7 +23265,7 @@ Br0kdZxBL0kd9/8B40EKPiIwny4AAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lines</span> <span class="o">=</span> <span class="n">hough_lines</span><span class="p">(</span><span class="n">region_select</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">min_line_len</span><span class="p">,</span> <span class="n">max_line_gap</span><span class="p">)</span>
@@ -23299,13 +23294,13 @@ Br0kdZxBL0kd9/8B40EKPiIwny4AAAAASUVORK5CYII=
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[22]:</div>
+<div class="prompt output_prompt">Out[25]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e543faaa90&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e6f0cc080&gt;</pre>
 </div>
 
 </div>
@@ -23433,7 +23428,7 @@ bM60FxoHfWesmVnDlV26MTOzgjnQm5k1nAO9mVnDOdCbmTWcA72ZWcM50JuZNZwDvZlZwznQm5k1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">lines</span> <span class="o">=</span> <span class="n">region_of_interest</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span><span class="n">vertices</span><span class="p">)</span>
@@ -23463,13 +23458,13 @@ bM60FxoHfWesmVnDlV26MTOzgjnQm5k1nAO9mVnDOdCbmTWcA72ZWcM50JuZNZwDvZlZwznQm5k1
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[23]:</div>
+<div class="prompt output_prompt">Out[26]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.image.AxesImage at 0x1e53eae4828&gt;</pre>
+<pre>&lt;matplotlib.image.AxesImage at 0x20e69b51dd8&gt;</pre>
 </div>
 
 </div>
