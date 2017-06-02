@@ -11,8 +11,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/grayscale.jpg "Grayscale" 
-[image2]: ./examples/change_in_asphalt_color.png "Asphalt" 
+[image1]: ./examples/grayscale.jpg?raw=true "Grayscale" 
+[image2]: ./examples/change_in_asphalt_color.png?raw=true "Asphalt" 
 
 ---
 
@@ -31,7 +31,7 @@ My pipeline consisted of 5 primary steps:
 In order to draw a single line on the left and right lanes, I modified the draw_lines() function to:
 1. Given the (x1,y1) & (x2,y2) coordinates for each line, find the corresponding slope and y-intercepts. 
 2. Identify parallel  lines for each side. If these parallel  lines are close to each other, then we keep them all and average the intercepts and slopes. If the lines are far apart, (in this pipeline, we define far as more than +/- 20 px from the median of the slope values), then only certain slope/intercept pairs are evaluated. In this situation, for left lanes, we only consider slope/intercept pairs which have a larger intercept. These pairs would most likely be the line closest to the center of the image and most likely a lane line, as opposed to a parallel highway barrier shadow. For right lanes, we conly consider slope/intercept pairs which ahve a smaller intercept. Consider the image below: 
- <img src="./examples/lane_line_or_barrier_shadow.png" alt="Parallel lane lines and shadow" style="width:500px;"\>
+ <img src="./examples/lane_line_or_barrier_shadow.png?raw=true" alt="Parallel lane lines and shadow" style="width:500px;"\>
 3. Once we have a set of slope/intercept pairs singled out from the previous step, we attempt to screen out any outliers to prevent them from skewing our final slope/intercept value for the left and right lane. 
      We accomplish this by: 
      * Slopes: Removing each slope/intercept pair if the difference between the selected slope is greater than 20% of the median of the set of slopes.
@@ -58,7 +58,7 @@ There are numerous improvements we could make to this pipeline:
 
  1. As demonstrated in the challenge video, the current pipeline may mistake changes in asphalt cement color for lane edges. To better handle these scenarios, the next iteration of the pipeline should an algorithm to detect occasional anomalous edges such as the one below and to subsequently ignore them. Perhaps one way of identifying these edges is by keeping track of a global right and left lane slope and intercept parameter, when a frame suddenly switches from a lane edge of one set of parameters to another that is significantly different, the new different parameters would be categorized as an anomaly and ignored. 
  
- <img src="./examples/change_in_asphalt_color.png" alt="Change in asphalt color" style="width:500px;"\>
+ <img src="./examples/change_in_asphalt_color.png?raw=true" alt="Change in asphalt color" style="width:500px;"\>
  
  2. We could further improve the pipeline such that it could detect curved edges. At the moment, it only detects straight lines. Curved lanes could provide more accurate environmental information to the vehicle. 
  
