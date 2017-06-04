@@ -51,10 +51,9 @@ In order to draw a single line on the left and right lanes, I modified the draw_
 
 There are numerous improvements we could make to this pipeline:
 
- 1. As demonstrated in the challenge video, the current pipeline may mistake changes in asphalt cement color for lane edges. To better handle these scenarios, the next iteration of the pipeline should an algorithm to detect occasional anomalous edges such as the one below and to subsequently ignore them. Perhaps one way of identifying these edges is by keeping track of a global right and left lane slope and intercept parameter, when a frame suddenly switches from a lane edge of one set of parameters to another that is significantly different, the new different parameters would be categorized as an anomaly and ignored. 
+ 1. As demonstrated in the challenge video, the current pipeline may mistake changes in asphalt cement color for lane edges. To better handle these scenarios, the next iteration of the pipeline should include an algorithm to detect occasional anomalous edges such as the one below and to subsequently ignore them. Perhaps one way of identifying these edges is by keeping track of a global right and left lane slope and intercept parameter, when a frame suddenly switches from a lane edge of one set of parameters to another that is significantly different, the new different parameters would be categorized as an anomaly and ignored. 
  
  ![](./examples/change_in_asphalt_color.png?raw=true)
  2. We could further improve the pipeline such that it could detect curved edges. At the moment, it only detects straight lines. Curved lanes could provide more accurate environmental information to the vehicle. 
  
  3. Many of the parameters (such as the canny threshold or the houghline parameters) input in the pipeline were tuned after a series of sample trials. These parameters could be further trained with additional training videos.
-
